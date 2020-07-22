@@ -24,6 +24,18 @@ a{
     color: whitesmoke;
 }
 
+.itemInfo{
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+        p {
+            margin: 5px;
+            position: absolute;
+            bottom: -15px;
+            right:-7px;
+        }
+}
+
 .total{
     display: flex;
     width: 100%;
