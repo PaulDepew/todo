@@ -13,14 +13,15 @@ const ToDo = () => {
 
   const _addItem = (item) => {
     item.due = new Date();
-    fetch(todoAPI, {
+    axios( {
+      url: todoAPI,
       method: 'post',
       mode: 'cors',
       cache: 'no-cache',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(item)
+      data: JSON.stringify(item),
     })
-      .then(response => response.json())
+      .then(response => response.data)
       .then(savedItem => {
         setList([...list, savedItem])
       })
