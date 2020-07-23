@@ -1,19 +1,43 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import TodoForm from './form.jsx';
 import TodoList from './list.jsx';
 import {Container, Row, Col} from 'react-bootstrap'
 import axios from 'axios';
+import Pagination from 'react-bootstrap-4-pagination';
+import { SettingsContext } from '../../context/settings.jsx'
+
 
 import './todo.scss';
 
 const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
 
 const ToDo = (props) => {
+  const context = useContext(SettingsContext);
 
   
-
+  
   const [list, setList] = useState([]); 
   const [count, setCount] = useState(0); 
+  const [currentPage, setPage] = useState(1);  
+  const [displayList, setDisplay] = useState([])
+
+let maxPages = Math.ceil(list.length/context.settings[0].pageMax);
+
+
+let paginationConfig = {
+  totalPages: maxPages,
+  currentPage: currentPage,
+  showMax: context.settings[0].pageMax ,
+  prevNext: true,
+  onClick: function (page) {
+    if(currentPage >= maxPages){
+      page=currentPage
+    }
+    setPage(page)
+    cutList(list, page)
+  
+   },
+};
 
 
   function handleGetData(list){
@@ -21,6 +45,23 @@ const ToDo = (props) => {
     console.log('Form Submitted with :: ', list);
   }
  
+  function cutList(list, page) {
+    let startIndex = 0;
+    let tempList = list;
+    if(page !== 1) {
+      startIndex = (page * context.settings[0].pageMax)-1;
+    }
+    console.log(startIndex);
+    let displayList = [];
+    for(let i = startIndex; i< (startIndex + context.settings[0].pageMax); i++) {
+      if(i<=tempList.length){
+        displayList.push(tempList[i]);
+      }else {
+        setDisplay(displayList);
+      }
+    }
+    setDisplay(displayList);
+  }
 
   const addItem = (item) => {
     item.due = new Date();
@@ -110,9 +151,9 @@ const ToDo = (props) => {
     return (
       <>
 
-        <Container fluid >
+        <Container >
     
-         <Row fluid>
+         <Row >
            <section className="total">
           <h2>
           There are {count} Items To Complete
@@ -121,21 +162,23 @@ const ToDo = (props) => {
           </Row>
           <section className="toDo">
           <Row>
-            <Col md lg sm="auto">
+            <Col>
           <div>
             <TodoForm handleSubmit={addItem} />
           </div>
           </Col>
-          <Col  md lg sm="auto">
+          <Col >
           <div>
+          <Pagination {...paginationConfig} />
             <TodoList
-              list={list}
+              list={displayList}
               handleComplete={toggleComplete}
               handleDelete={deleteItem}
             />
           </div>
           </Col>
           </Row>
+            
           </section>
         </Container>
         </>
