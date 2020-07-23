@@ -51,10 +51,6 @@ a{
 
 .toDo {
 
-    display:flex;
-    flex-direction:row;
-    justify-content: flex-start;
-    margin: 1em;
 
   
     form {
@@ -87,7 +83,7 @@ a{
             display:flex;
             flex-direction:row;
             font-size: .75em;
-            width: 25em;
+      
 
             &.complete-true {
               span {

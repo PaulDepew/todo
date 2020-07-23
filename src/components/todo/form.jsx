@@ -13,7 +13,6 @@ const TodoForm = (props) => {
   function handleDataForm(data){
     setFormData(data);
     props.handleSubmit(data)
-    console.log('Form Submitted with :: ', data);
   }
 
 

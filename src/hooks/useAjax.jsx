@@ -1,32 +1,23 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 const axios = require('axios');
 
 const todoAPI = 'https://api-js401.herokuapp.com/api/v1/todo';
 
-const useAjax = (callback) => {
+const useAjax = (url, options) => {
 
-  const [archive, setList] = useState([]);
+  const [data, setData] = useState(null);
 
-
-  const handleList = (event) => {
-    if (event) event.preventDefault();
-    callback(archive);
-  };
-
-  const getList = () => {
-    try{
-      let data = axios.get(todoAPI);
-      setList(...archive, data);
-    } catch (error){
-      console.log(error);
-    }
-  };
-
-  return [
-    archive,
-    getList,
-    handleList,
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      fetch(url)
+        .then((response)=> response.json())
+        .then((result) => {
+          setData(result);
+        })
+    };
+    fetchData();
+  }, []);
+  return {data};
 };
 
 export default useAjax;

@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {ListGroup, Toast, Badge, Container, Col, Row} from 'react-bootstrap';
+import { SettingsContext } from '../../context/settings.jsx'
 
 
 const TodoList = (props) => {
 
 let StatusText = 'Pending'
+const context = useContext(SettingsContext);
 
 const handleVariant = (item) => {
   if(item.complete === false){
@@ -32,9 +34,9 @@ const handleVariant = (item) => {
           > 
             <Toast.Header
             >
-              <Container fluid>
-            <Row fluid>
-          <Col md lg sm="auto">
+              <Container fluid="true">
+            <Row fluid="true">
+          <Col>
           <Badge pill variant={handleVariant(item)} onClick={() => props.handleComplete(item._id)}>{StatusText}</Badge>{' '}
           </Col>
 
@@ -51,12 +53,12 @@ const handleVariant = (item) => {
            <Container fluid>
               <Row >
                 <section className="itemInfo">
-                <Col md lg sm="auto">
+                <Col>
                   <h4>
                   {item.text}
                    </h4>
                 </Col>
-                 <Col md lg sm="auto">
+                 <Col>
 
                 <p>
                 Difficulty:{item.difficulty}
