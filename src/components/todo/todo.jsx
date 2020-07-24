@@ -20,6 +20,7 @@ const ToDo = (props) => {
   const [count, setCount] = useState(0); 
   const [currentPage, setPage] = useState(1);  
   const [displayList, setDisplay] = useState([])
+  const [firstLoad, setFirstLoad] = useState(true);
 
 let maxPages = Math.ceil(list.length/context.settings[0].pageMax);
 
@@ -30,12 +31,8 @@ let paginationConfig = {
   showMax: context.settings[0].pageMax ,
   prevNext: true,
   onClick: function (page) {
-    if(currentPage >= maxPages){
-      page=currentPage
-    }
     setPage(page)
     cutList(list, page)
-  
    },
 };
 
@@ -51,16 +48,16 @@ let paginationConfig = {
     if(page !== 1) {
       startIndex = (page * context.settings[0].pageMax)-1;
     }
-    console.log(startIndex);
+    
     let displayList = [];
     for(let i = startIndex; i< (startIndex + context.settings[0].pageMax); i++) {
-      if(i<=tempList.length){
+      if(tempList[i]){
         displayList.push(tempList[i]);
-      }else {
-        setDisplay(displayList);
       }
     }
-    setDisplay(displayList);
+    if(displayList !== []) {
+      setDisplay(displayList);
+    }
   }
 
   const addItem = (item) => {
@@ -83,7 +80,7 @@ let paginationConfig = {
 
   const toggleComplete = (id) => {
 
-    let item = list.filter(i => i._id === id)[0] || {};
+    let item = displayList.filter(i => i._id === id)[0] || {};
 
     if (item._id) {
 
@@ -102,6 +99,7 @@ let paginationConfig = {
         .then(response => response.data)
         .then(savedItem => {
           setList(list.map(listItem => listItem._id === item._id ? savedItem : listItem));
+          
         })
         .catch(console.error);
     }
@@ -147,6 +145,18 @@ let paginationConfig = {
       let number = list.filter(item => !item.complete).length;
       setCount(number);
     })
+
+    useEffect(() => {
+      setTimeout(() => {
+        if(firstLoad === true) {
+          cutList(list, 1);
+          setPage(1);
+          setFirstLoad(false);
+        }
+      }, 500);
+    });
+  
+  
 
     return (
       <>

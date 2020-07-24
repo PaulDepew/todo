@@ -1,11 +1,13 @@
 import React from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
 import SettingsProvider from './context/settings.jsx'
+import Login from './components/auth/login.jsx';
+import LoginContext from './components/auth/context.jsx';
+import Auth from './components/auth/auth.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import ToDo from './components/todo/todo.jsx';
-// import Pages from './components/todo/pages';
 
 const App = () => {
     return (
@@ -14,8 +16,12 @@ const App = () => {
       <Nav.Link  exact path="/">Home</Nav.Link>
       </Navbar>
       <SettingsProvider>
-        <ToDo />
-        {/* <Pages /> */}
+        <Login />
+        <LoginContext>
+          <Auth>
+            <ToDo />
+          </Auth>
+        </LoginContext>
       </SettingsProvider>
       </>
     );
