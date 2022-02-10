@@ -9,7 +9,7 @@
     "bootstrap": "^4.5.0",
     "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "16.13.1",
     "react-bootstrap": "^1.2.2",
     "react-bootstrap-4-pagination": "^1.0.3",
